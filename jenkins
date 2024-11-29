@@ -1,25 +1,10 @@
 pipeline {
-    agent any  // This will run on any available agent.
+    agent any
 
     stages {
-        stage('clone') {
-            agent {
-                docker { 
-                    image 'maven:3.8.1-jdk-11'  // Using a specific Maven Docker image with JDK 11
-                    args '-v /root/.m2:/root/.m2'  // Persist Maven repository across builds
-                }
-            }
+        stage('Hello') {
             steps {
-                script {
-                    // Run Maven version check in the Docker container
-                    sh 'mvn --version'
-                }
-            }
-        }
-        stage('build') {
-            steps {
-                // Execute build command, this can be replaced with the actual build commands
-                sh 'echo "Building the project..."'
+                echo 'Hello World'
             }
         }
     }
