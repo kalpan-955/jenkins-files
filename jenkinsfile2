@@ -1,22 +1,21 @@
-pipeline{
-    agent any
+pipeline {
+    agent any // This allows the pipeline to run on any available agent
 
-    stages{
-        stage('clone'){
-            agent{
-                docker{
-                    image 'maven'
+    stages {
+        stage('clone') {
+            agent {
+                docker {
+                    image 'maven' // This runs the 'clone' stage in a Maven Docker container
                 }
             }
-            steps{
-                sh 'mvn --version'
-
+            steps {
+                sh 'mvn --version' // Just prints Maven version
             }
         }
-        stage('build'){
-            steps{
-                sh 'echo world'
 
+        stage('build') {
+            steps {
+                sh 'echo world' // Runs on default agent (not inside Maven container)
             }
         }
     }
