@@ -1,13 +1,22 @@
-pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1-jdk-11'
+pipeline{
+    agent any
+
+    stages{
+        stage('clone'){
+            agent{
+                docker{
+                    image 'maven'
+                }
+            }
+            steps{
+                sh 'mvn --version'
+
+            }
         }
-    }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -v'
+        stage('build'){
+            steps{
+                sh 'echo world'
+
             }
         }
     }
