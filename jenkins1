@@ -1,15 +1,21 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('clone'){
-            steps{
-                sh 'echo clone'
-                sh 'echo clone'
+    stages {
+        stage('clone') {
+            agent {
+                docker {
+                    image 'maven'
+                }
+            }
+            steps {
+                sh 'mvn --version'
+
             }
         }
-        stage('build'){
-            steps{
-                sh 'echo build'
+        stage('build') {
+            steps {
+                sh 'echo world'
+
             }
         }
     }
