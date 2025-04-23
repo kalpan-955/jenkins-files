@@ -1,23 +1,30 @@
-pipeline{
+pipeline {
     agent any
 
-    stages{
-        stage('clone'){
-            agent{
-                docker{
-                    image 'maven'
+    stages {
+        stage('clone') {
+            agent {
+                docker {
+                    image 'maven:3.8.7-openjdk-17'
                 }
             }
-            steps{
+            steps {
+                echo 'Checking Maven version inside container...'
                 sh 'mvn --version'
-
             }
         }
-        stage('build'){
-            steps{
-                sh 'echo world'
 
+        stage('build') {
+            steps {
+                echo 'Starting build...'
+                sh 'echo world'
             }
+        }
+    }
+
+    post {
+        failure {
+            echo "Pipeline failed. Check the logs of earlier stages."
         }
     }
 }
