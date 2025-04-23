@@ -23,10 +23,14 @@ pipeline {
 
     post {
         always {
-            cleanWs() // ✅ correct method name
+            node {
+                cleanWs()
+            }
         }
         success {
-            sh 'echo done'
+            node {
+                sh 'echo done'
+            }
         }
     }
 }
