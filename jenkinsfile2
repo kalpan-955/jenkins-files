@@ -1,19 +1,27 @@
 pipeline {
-    agent{
-        docker{
-            image 'maven'
-        }
-    }
-    stages {
-        stage ('clone'){
-
+    agent none
+    stages{
+        stage('clone'){
+            agent{
+                docker{
+                    image 'maven'
+                }
+            }
             steps{
                 sh 'mvn --version'
             }
         }
         stage('build'){
-            steps {
-                sh 'echo build'
+            steps{
+                echo 'docker bild'
+            }
+        }
+        post {
+            always{
+                cleanWS()
+            }
+            success{
+                sh "echo done"
             }
         }
     }
