@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent none
     stages{
         stage('clone'){
@@ -12,11 +12,12 @@ pipeline{
             }
         }
         stage('build'){
+            agent any
             steps{
                 echo 'docker bild'
             }
         }
-        post{
+        post {
             always{
                 cleanWS()
             }
