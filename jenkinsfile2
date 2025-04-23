@@ -1,29 +1,32 @@
 pipeline {
     agent none
-    stages{
-        stage('clone'){
-            agent{
-                docker{
-                    image 'maven'
+
+    stages {
+        stage('clone') {
+            agent {
+                docker {
+                    image 'maven:3.8.7-openjdk-17'
                 }
             }
-            steps{
+            steps {
                 sh 'mvn --version'
             }
         }
-        stage('build'){
+
+        stage('build') {
             agent any
-            steps{
-                echo 'docker bild'
+            steps {
+                echo 'docker build'
             }
         }
-        post {
-            always{
-                cleanWS()
-            }
-            success{
-                sh "echo done"
-            }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            sh 'echo done'
         }
     }
 }
