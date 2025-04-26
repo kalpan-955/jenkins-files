@@ -1,11 +1,60 @@
-pipeline {
-    agent any
+currentbuild.displayname = "app-ui#"+currentbuild.number
 
-    stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
+pipeline{
+    agent any
+    environment{
+        script_options = "clean --30"
+        docker_pass = credentials('docker-password')
+    }
+    stages{
+        stage('clone'){
+            agent{
+                docker{
+                    image 'maven'
+                }
             }
+            environment{
+                stage_script_options = "clean --50"
+            }
+        }
+        steps{
+            script{
+            sh 'mvn --version'
+            sh 'printenv'
+            sh 'echo $script_options'
+            currentBuild.description = "the Branch built: ${GIT_BRANCH}"
+
+            }
+            
+        }
+        post{
+            always{
+                echo "this is from stage"
+            }
+        }
+        stage('build'){
+            agent{
+                docker {
+                    image 'node'
+                }
+            }
+            steps{
+                sh 'printenv'
+                sh 'node --version'
+            }
+        }
+        stage('docker login'){
+            steps{
+                sh "docker login -u kalpana -p $docker-password"
+            }
+        }
+    }
+    post{
+        always{
+            cleanWS()
+        }
+        success{
+            sh "echo done"
         }
     }
 }
