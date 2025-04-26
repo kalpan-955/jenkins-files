@@ -1,59 +1,59 @@
-currentbuild.displayname = "app-ui#"+currentbuild.number
+currentBuild.displayName = "app-ui#" + currentBuild.number
 
-pipeline{
+pipeline {
     agent any
-    environment{
+    environment {
         script_options = "clean --30"
         docker_pass = credentials('docker-password')
     }
-    stages{
-        stage('clone'){
-            agent{
-                docker{
+    stages {
+        stage('clone') {
+            agent {
+                docker {
                     image 'maven'
                 }
             }
-            environment{
+            environment {
                 stage_script_options = "clean --50"
             }
+            steps {
+                script {
+                    sh 'mvn --version'
+                    sh 'printenv'
+                    sh 'echo $script_options'
+                    currentBuild.description = "the Branch built: ${GIT_BRANCH}"
+                }
+            }
+            post {
+                always {
+                    echo "this is from stage"
+                }
+            }
         }
-        steps{
-            script{
-            sh 'mvn --version'
-            sh 'printenv'
-            sh 'echo $script_options'
-            currentBuild.description = "the Branch built: ${GIT_BRANCH}"
 
-            }
-            
-        }
-        post{
-            always{
-                echo "this is from stage"
-            }
-        }
-        stage('build'){
-            agent{
+        stage('build') {
+            agent {
                 docker {
                     image 'node'
                 }
             }
-            steps{
+            steps {
                 sh 'printenv'
                 sh 'node --version'
             }
         }
-        stage('docker login'){
-            steps{
-                sh "docker login -u kalpana -p $docker-password"
+
+        stage('docker login') {
+            steps {
+                sh "docker login -u kalpana -p $docker_pass"
             }
         }
     }
-    post{
-        always{
-            cleanWS()
+    post {
+        always {
+            cleanWs()
         }
-        success{
+        success {
             sh "echo done"
         }
     }
