@@ -4,7 +4,7 @@ pipeline {
     agent any
     environment {
         script_options = "clean --30"
-        docker_pass = credentials('docker-password')
+        docker_pass = credentials('docker password')
     }
     stages {
         stage('clone') {
