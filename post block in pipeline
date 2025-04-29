@@ -1,0 +1,21 @@
+pipeline{
+    agent any
+    stages{
+        stage('clone'){
+            agent{
+                docker{
+                    image 'maven'
+                }
+            }
+            steps{
+               sh 'mvn --version'
+            }
+        }
+    }
+    
+    post{
+        always{
+            echo "this is from stage"
+        }
+    }
+}
