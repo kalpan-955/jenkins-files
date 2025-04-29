@@ -1,28 +1,26 @@
+#!/usr/bin/env groovy
+
+@Library('shared-library@master') _ //master or whatever branch
+
+
 pipeline {
-    agent any
-
+    agent {
+          docker {
+                	image 'openjdk:11'
+               		}
+          	}
+  
     stages {
-        stage('clone') {
-            agent {
-                docker {
-                    image 'maven'
+          stage('Building') {
+             steps {
+                  sh 'chmod +x gradlew'
+                  sh "./gradlew build "
+                   }
                 }
-            }
-            steps {
-                sh 'mvn --version'
-            }
-        }
-
-        stage('check logs') {
-            steps {
-                sh 'echo "filtering logs for task 3"' 
-            }
-        }
-    }
-
-    post {
-        always {
-            echo "this"
-        }
-    }
+                stage ('Check logs') {
+                    steps {
+                        filterLogs ('Task', 3)
+                    }
+                }
+      }
 }
