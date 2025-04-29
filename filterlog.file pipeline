@@ -15,9 +15,7 @@ pipeline {
 
         stage('check logs') {
             steps {
-                // Replace with the actual command you intend to run
                 sh 'echo "filtering logs for task 3"' 
-                // If `filterlogs` is a custom command, use: sh 'filterlogs task,3'
             }
         }
     }
