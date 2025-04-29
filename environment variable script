@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+        script_options = "-- clean 30"
+    }
+
+    stages {
+        stage('clone') {
+            agent {
+                docker {
+                    image 'maven'
+                }
+            }
+            environment {
+                script_options = "-- clean 50"
+            }
+            steps {
+                sh 'mvn --version'
+                sh 'printenv'
+                sh 'echo $script_options'
+                script {
+                    currentBuild.description = "The branch built: ${env.GIT_BRANCH}"
+                }
+            }
+            post {
+                always {
+                    echo "is from clone stage"
+                }
+            }
+        }
+
+        stage('build') {
+            agent {
+                docker {
+                    image 'node'
+                }
+            }
+            steps {
+                sh 'printenv'
+                sh 'node --version'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            sh "echo done"
+        }
+    }
+}
