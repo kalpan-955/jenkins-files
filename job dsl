@@ -1,15 +1,19 @@
 pipelineJob('job-dsl-plugin') {
+configFiles {
   definition {
     cpsScm {
       scm {
         git {
           remote {
-            url('https://github.com/jenkinsci/job-dsl-plugin.git')
+            url('https://github.com/kalpan-955/jenkins-files.git')
           }
-          branch('*/master')
+          branch('*/main')
         }
       }
       lightweight()
     }
   }
+triggers {
+        githubPush()
+    }
 }
