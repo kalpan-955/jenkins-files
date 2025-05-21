@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     stages {
+        stage("Set Build Name") {
+            steps {
+                script {
+                    currentBuild.displayName = "app-ui" + currentBuild.number
+                }
+            }
+        }
+
         stage("Clone") {
             agent {
                 docker {
@@ -19,11 +27,9 @@ pipeline {
             }
         }
     }
-    post{
-        always{
+    post {
+        always {
             cleanWs()
         }
     }
 }
-
-
