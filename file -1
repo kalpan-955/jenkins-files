@@ -1,9 +1,10 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build with Maven inside Docker') {
+        stage('Hello') {
             steps {
-                sh 'docker run --rm -v "$PWD":/app -w /app maven mvn clean install'
+                echo 'Hello World'
             }
         }
     }
