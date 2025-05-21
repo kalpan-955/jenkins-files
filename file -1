@@ -2,9 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage("Clone") {
+            agent {
+                docker {
+                    image 'maven'
+                }
+            }
             steps {
-                echo 'Hello World'
+                sh 'mvn --version'
+            }
+        }
+
+        stage("Build") {
+            steps {
+                echo "Build steps will go here"
             }
         }
     }
